@@ -1,21 +1,28 @@
 body {
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: white;
 }
 
 canvas {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
+
   width: 100%;
   height: 100%;
 }
 
 .canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  pointer-events: none; 
+}
+
+#main-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 #navbar {
@@ -52,7 +59,6 @@ canvas {
 #navbar a:hover {
   color: #333;
 }
-
 #text-container {
   position: absolute;
   top: 50%;
@@ -75,12 +81,151 @@ h2 {
   margin-bottom: 3vw;
   line-height: 1.4;
 }
+.about-section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-.section {
-  padding: 50px 0;
+.split-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+#threejs-container {
+  width: 100%;
+  height: 100%;
+}
+.model-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 400px; /* Adjust height as needed */
+  
+}
+
+/* Adjustments for responsiveness */
+@media screen and (max-width: 768px) {
+  .split-container {
+    flex-direction: column;
+  }
+
+  .model-container {
+    order: -1; /* Move the model container above */
+  }
+}
+
+.about-section .content {
+  max-width: 800px;
+}
+
+.about-section h3 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-section p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+
+.service-section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
-.section h3 {
-  margin-bottom: 20px;
+.service-section .content {
+  max-width: 800px;
 }
+
+.service-section h3 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-section p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+
+.blog-section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+}
+
+.blog-section .content {
+  max-width: 800px;
+}
+
+.blog-section h3 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-section p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+
+.contact-section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+}
+
+.contact-section .content {
+  max-width: 800px;
+}
+
+.contact-section h3 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-section p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+
+#about {
+  background-color: #ffffff;
+}
+
+#services {
+  background-color: #ffffff;
+}
+
+#blog {
+  background-color: #ffffff;
+}
+
+#contact {
+  background-color: #ffffff;
+}
+
+

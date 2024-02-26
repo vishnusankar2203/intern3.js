@@ -11,14 +11,18 @@ camera.position.z = 100;
 // Create a renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+document.body.insertBefore(renderer.domElement, document.body.firstChild); // Render behind other content
 
 // Create particle system with spheres
-const particleSystem = createParticleSystem();
-scene.add(particleSystem);
+const particleSystem1 = createSphereParticleSystem();
+scene.add(particleSystem1);
 
-// Function to create particle system
-function createParticleSystem() {
+// Create particle system with cubes (representing computer parts)
+const particleSystem2 = createBoxParticleSystem();
+scene.add(particleSystem2);
+
+// Function to create particle system with spheres
+function createSphereParticleSystem() {
   const particleSystem = new THREE.Group();
   const numParticles = 350;
 
@@ -34,9 +38,31 @@ function createParticleSystem() {
   return particleSystem;
 }
 
+// Function to create particle system with cubes
+function createBoxParticleSystem() {
+  const particleSystem = new THREE.Group();
+  const numParticles = 1000;
+
+  const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1); // Each particle will be a small cube
+  
+  for (let i = 0; i < numParticles; i++) {
+    const material = new THREE.MeshBasicMaterial({ color: getRandomColor() });
+    const particle = new THREE.Mesh(geometry, material);
+    particle.position.set(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5);
+    particleSystem.add(particle);
+  }
+
+  return particleSystem;
+}
+
 // Function to get random light blue color
 function getRandomBlue() {
   return new THREE.Color(0xadd8e6); // Light blue color
+}
+
+// Function to get random color
+function getRandomColor() {
+  return new THREE.Color(Math.random(), Math.random(), Math.random());
 }
 
 // Track mouse movement
@@ -54,26 +80,19 @@ function onMouseMove(event) {
 
 window.addEventListener('mousemove', onMouseMove, false);
 
-// Handle scrolling to reveal about section
-window.addEventListener('scroll', () => {
-  const aboutSection = document.getElementById('about');
-  const distanceToTop = aboutSection.getBoundingClientRect().top;
-
-  if (distanceToTop < window.innerHeight / 2) {
-    aboutSection.style.opacity = 1;
-  } else {
-    aboutSection.style.opacity = 0;
-  }
-});
-
 // Render loop
 function animate() {
   requestAnimationFrame(animate);
 
-  particleSystem.rotation.x += 0.001;
-  particleSystem.rotation.y += 0.001;
+  particleSystem1.rotation.x += 0.001;
+  particleSystem1.rotation.y += 0.001;
+
+  particleSystem2.rotation.x += 0.01;
+  particleSystem2.rotation.y += 0.01;
 
   renderer.render(scene, camera);
 }
 
 animate();
+
+
