@@ -8,10 +8,43 @@ scene.background = new THREE.Color(0xffffff);
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 100;
 
+// Add lights to the scene
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+directionalLight.position.set(10, 10, 10);
+scene.add(directionalLight);
+
 // Create a renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.insertBefore(renderer.domElement, document.body.firstChild); // Render behind other content
+document.body.insertBefore(renderer.domElement, document.body.firstChild); 
+
+
+
+// Function to create a box background
+function createBoxBackground() {
+  const geometry = new THREE.BoxGeometry(100, 100, 100);
+  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const box = new THREE.Mesh(geometry, material);
+  return box;
+}
+
+// Function to create a sphere background
+function createSphereBackground() {
+  const geometry = new THREE.SphereGeometry(50, 16, 16);
+  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  const sphere = new THREE.Mesh(geometry, material);
+  return sphere;
+}
+
+
+
+
+// Create animated background particles
+const particleGeometry = new THREE.BufferGeometry();
+const particleMaterial = new THREE.PointsMaterial({ color: 0x888888, size: 0.05 });
 
 // Create particle system with spheres
 const particleSystem1 = createSphereParticleSystem();
@@ -21,10 +54,25 @@ scene.add(particleSystem1);
 const particleSystem2 = createBoxParticleSystem();
 scene.add(particleSystem2);
 
+// Intersection Observer for showing/hiding elements
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+    } else {
+      entry.target.classList.remove('show');
+    }
+  });
+}, { threshold: 0.5 }); // You can adjust the threshold as needed
+
+const hiddenElements = document.querySelectorAll('.hidden'); // Fix the selector
+hiddenElements.forEach((el) => observer.observe(el));
+
 // Function to create particle system with spheres
 function createSphereParticleSystem() {
   const particleSystem = new THREE.Group();
-  const numParticles = 350;
+  const numParticles = 500;
+  const particleSize = 0.1;
 
   for (let i = 0; i < numParticles; i++) {
     const radius = Math.random() * 2 + 1;
@@ -41,10 +89,10 @@ function createSphereParticleSystem() {
 // Function to create particle system with cubes
 function createBoxParticleSystem() {
   const particleSystem = new THREE.Group();
-  const numParticles = 1000;
+  const numParticles = 0;
 
   const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1); // Each particle will be a small cube
-  
+
   for (let i = 0; i < numParticles; i++) {
     const material = new THREE.MeshBasicMaterial({ color: getRandomColor() });
     const particle = new THREE.Mesh(geometry, material);
@@ -93,6 +141,27 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+window.addEventListener('scroll', function () {
+  const navbar = document.getElementById('navbar');
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  // Change background color based on scroll position
+  if (scrollTop > 50) {
+    navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+  } else {
+    navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+  }
+});
+
+document.querySelectorAll('#navbar a').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
+
+// Start the animation loop
 animate();
-
-
